@@ -4,4 +4,4 @@
 ## License
 ![CC 4.0 BY-NC](https://i.creativecommons.org/l/by-nc/4.0/88x31.png)
 
-이 프로그램은 [이런](https://creativecommons.org/licenses/by-nc/4.0/) 라이선스를 사용합니다.
+이 프로그램은 [이런](https://creativecommons.org/licenses/by-nc/4.0/deed.ko) 라이선스를 사용합니다.

@@ -1,15 +1,15 @@
 <?php
     function html_load($data = '404 Error', $head = '') {
-        $main_html = '<html>
-                        <head>
-                            '.$head.'
-                        </head>
-                        <body>
-                            <div id="main">
-                                '.$data.'
-                            </div>
-                        </body>
-                    </html>';
+        $main_html =    '<html>
+                            <head>
+                                '.$head.'
+                            </head>
+                            <body>
+                                <div id="main">
+                                    '.$data.'
+                                </div>
+                            </body>
+                        </html>';
                     
         return $main_html;
     }
@@ -36,7 +36,7 @@
     $user_data = $select -> fetchAll();
     if(!$user_data) {
         if($_SERVER['REQUEST_METHOD'] != 'POST') {
-            echo html_load('<form method="post">
+            echo html_load( '<form method="post">
                                 <input name="pw">
                                 <button>InSert</button>
                             </form>');
@@ -50,7 +50,7 @@
     } else {
         if(!isset($_SESSION['pw'])) {
             if($_SERVER['REQUEST_METHOD'] != 'POST') {
-                echo html_load('<form method="post">
+                echo html_load( '<form method="post">
                                     <input name="pw">
                                     <button>Login</button>
                                 </form>');
@@ -69,7 +69,7 @@
                     $daily_data = $select -> fetchAll();
                     if(!$daily_data) {
                         if($_SERVER['REQUEST_METHOD'] != 'POST') {
-                            echo html_load('<form method="post">
+                            echo html_load( '<form method="post">
                                                 <textarea rows="25" cols="100" name="data"></textarea>
                                                 <br>
                                                 <button>InSert</button>
@@ -82,7 +82,7 @@
                             echo redirect();
                         }
                     } else {
-                        echo html_load(date("Y-m-d").'
+                        echo html_load( date("Y-m-d").'
                                         <br>'
                                         .preg_replace('/\n/', '<br>', $daily_data[0]['data']));
                     }

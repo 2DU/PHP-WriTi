@@ -88,6 +88,8 @@
                     }
                     
                     break;
+                case 'views':
+                    echo 'test';
                 default:
                     echo html_load();
             }

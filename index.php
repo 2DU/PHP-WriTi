@@ -4,6 +4,7 @@
         'login' => 'Login',
         'edit' => 'Edit',
         'record' => 'Record',
+        'password' => 'Password',
     );
 
     function html_load($data = '404 Error', $head = '') {
@@ -22,6 +23,29 @@
 
                                     .starter-template {
                                         padding-top: 20px;
+                                    }
+
+                                    textarea {
+                                        border: solid 1px #aaa;
+                                        border-radius: 3px;
+                                        width: 100%;
+                                        padding: 10px;
+                                    }
+
+                                    button {
+                                        border: 1px solid #aaa;
+                                        background: white;
+                                        padding-top: 5px;
+                                        padding-left: 10px;
+                                        border-radius: 3px;
+                                        padding-right: 10px;
+                                        padding-bottom: 5px;
+                                    }
+
+                                    input {
+                                        padding: 5px;
+                                        border: 1px solid #aaa;
+                                        border-radius: 3px;
                                     }
                                 </style>
                                 '.$head.'
@@ -78,7 +102,7 @@
         if($lang_file[$data]) {
             return $lang_file[$data];
         } else {
-            return 'Error';
+            return $data;
         }
     }
 
@@ -97,7 +121,7 @@
     if(!$user_data) {
         if($_SERVER['REQUEST_METHOD'] != 'POST') {
             echo html_load( '<form method="post">
-                                <input name="pw" type="password">
+                                <input name="pw" type="password" placeholder="'.load_lang('password').'">
                                 <button>'.load_lang('insert').'</button>
                             </form>');
         } else {
@@ -111,7 +135,7 @@
         if(!isset($_SESSION['pw'])) {
             if($_SERVER['REQUEST_METHOD'] != 'POST') {
                 echo html_load( '<form method="post">
-                                    <input name="pw" type="password">
+                                    <input name="pw" type="password" placeholder="'.load_lang('password').'">
                                     <button>'.load_lang('login').'</button>
                                 </form>');
             } else {

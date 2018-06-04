@@ -47,6 +47,10 @@
                                         border: 1px solid #aaa;
                                         border-radius: 3px;
                                     }
+
+                                    h2.head {
+                                        border-bottom: 1px solid #aaa;
+                                    }
                                 </style>
                                 '.$head.'
                             </head>
@@ -83,7 +87,20 @@
     }
 
     function render($data) {
-        $data = preg_replace('/\n/', '<br>', $data);
+        $data = preg_replace('/\r\n/', '<br>', $data);
+        $data = '<br>'.$data.'<br>';
+
+        $i = 1;
+        while(true) {
+            preg_match('/<br>(#+)(?:(?:(?!<br>).)+)/', $data, $match);
+            if($match) {
+                $data = preg_replace('/<br>(?:#+)((?:(?!<br>).)+)/', '<h'.strlen($match[1]).' class="head">'.$i.'. $1</h'.strlen($match[1]).'>', $data, 1);
+            } else {
+                break;
+            }
+            
+            $i += 1;
+        }
 
         $data = preg_replace('/\*\*((?:(?!\*\*).)+)\*\*/', '<b>$1</b>', $data);
         $data = preg_replace('/\*((?:(?!\*).)+)\*/', '<i>$1</i>', $data);
@@ -92,6 +109,12 @@
         $data = preg_replace('/_((?:(?!_).)+)_/', '<i>$1</i>', $data);
 
         $data = preg_replace('/~~((?:(?!~~).)+)~~/', '<s>$1</s>', $data);
+
+        $data = preg_replace('/!\[([^\]]+)\]\(([^\]]+)\)/', '<img src="$2" alt="$1">', $data);
+        $data = preg_replace('/\[([^\]]+)\]\(([^\]]+)\)/', '<a href="$2">$1</a>', $data);
+
+        $data = preg_replace('/^(?:<br>)+/', '', $data);
+        $data = preg_replace('/(?:<br>)+$/', '', $data);
 
         return $data;
     }

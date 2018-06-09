@@ -243,37 +243,37 @@
                                     if($match[1] == 'all') {
                                         if($match[2] == 'all') {
                                             if($match[3] == 'all') {
-                                                $select = $conn -> query('select date from data');
+                                                $select = $conn -> query('select date from data order by date');
                                             } else {
-                                                $select = $conn -> query('select date from data where date like "%-'.$match[3].'"');
+                                                $select = $conn -> query('select date from data where date like "%-'.$match[3].'" order by date');
                                             }
                                         } else {
                                             if($match[3] == 'all') {
-                                                $select = $conn -> query('select date from data where date like "%-'.$match[2].'-%"');
+                                                $select = $conn -> query('select date from data where date like "%-'.$match[2].'-%" order by date');
                                             } else {
-                                                $select = $conn -> query('select date from data where date like "%-'.$match[2].'-'.$match[3].'"');
+                                                $select = $conn -> query('select date from data where date like "%-'.$match[2].'-'.$match[3].'" order by date');
                                             }
                                         }
                                     } else {
                                         if($match[2] == 'all') {
                                             if($match[3] == 'all') {
-                                                $select = $conn -> query('select date from data where date like "'.$match[1].'-%"');
+                                                $select = $conn -> query('select date from data where date like "'.$match[1].'-%" order by date');
                                             } else {
-                                                $select = $conn -> query('select date from data where date like "'.$match[1].'-%-'.$match[3].'"');
+                                                $select = $conn -> query('select date from data where date like "'.$match[1].'-%-'.$match[3].'" order by date');
                                             }
                                         } else {
                                             if($match[3] == 'all') {
-                                                $select = $conn -> query('select date from data where date like "'.$match[1].'-'.$match[2].'-%"');
+                                                $select = $conn -> query('select date from data where date like "'.$match[1].'-'.$match[2].'-%" order by date');
                                             } else {
-                                                $select = $conn -> query('select date from data where date = "'.$match[1].'-'.$match[2].'-'.$match[3].'"');
+                                                $select = $conn -> query('select date from data where date = "'.$match[1].'-'.$match[2].'-'.$match[3].'" order by date');
                                             }
                                         }
                                     }
                                 } else {
-                                    $select = $conn -> query('select date from data');
+                                    $select = $conn -> query('select date from data order by date');
                                 }
                             } else {
-                                $select = $conn -> query('select date from data');
+                                $select = $conn -> query('select date from data order by date');
                             }
 
                             $select -> execute();

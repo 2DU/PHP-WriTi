@@ -24,42 +24,7 @@
                                 <meta name="viewport" content="width=device-width, initial-scale=1">
                                 <title>Test</title>
                                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-                                <style>
-                                    body {
-                                        padding-top: 50px;
-                                    }
-
-                                    .starter-template {
-                                        padding-top: 20px;
-                                    }
-
-                                    textarea {
-                                        border: solid 1px #aaa;
-                                        border-radius: 3px;
-                                        width: 100%;
-                                        padding: 10px;
-                                    }
-
-                                    button {
-                                        border: 1px solid #aaa;
-                                        background: white;
-                                        padding-top: 5px;
-                                        padding-left: 10px;
-                                        border-radius: 3px;
-                                        padding-right: 10px;
-                                        padding-bottom: 5px;
-                                    }
-
-                                    input {
-                                        padding: 5px;
-                                        border: 1px solid #aaa;
-                                        border-radius: 3px;
-                                    }
-
-                                    h2.head {
-                                        border-bottom: 1px solid #aaa;
-                                    }
-                                </style>
+                                <link rel="stylesheet" href="'.file_fix('/css/main.css').'">
                                 '.$head.'
                             </head>
                             <body>
@@ -88,6 +53,10 @@
 
     function redirect($url = '') {
         return '<meta http-equiv="refresh" content="0; url='.$_SERVER['PHP_SELF'].$url.'">';
+    }
+
+    function file_fix($url = '') {
+        return preg_replace('/\/index.php$/' , '', $_SERVER['PHP_SELF']).$url;
     }
 
     function url_fix($url = '') {

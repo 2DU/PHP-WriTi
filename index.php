@@ -15,7 +15,7 @@
         'Missing Error.'
     ];
 
-    function html_load($data = '404 Error', $head = '') {
+    function html_load($data, $head = '') {
         $main_html =    '<!DOCTYPE html>
                         <html>
                             <head>
@@ -55,7 +55,7 @@
         return '<meta http-equiv="refresh" content="0; url='.$_SERVER['PHP_SELF'].$url.'">';
     }
 
-    function file_fix($url = '') {
+    function file_fix($url) {
         return preg_replace('/\/index.php$/' , '', $_SERVER['PHP_SELF']).$url;
     }
 

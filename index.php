@@ -109,12 +109,35 @@
     $conn = new PDO('sqlite:data.db');
     session_start();
 
-    $create = $conn -> prepare('create table if not exists data(data text, date text)');
+    $create = $conn -> prepare('create table if not exists data(test text)');
     $create -> execute();
 
-    $create = $conn -> prepare('create table if not exists set_data(id text, data text)');
+    $create = $conn -> prepare('create table if not exists set_data(test text)');
     $create -> execute();
-                
+
+    $all_table = [];
+
+    $all_table['all'] = ['data', 'set_data'];
+    $all_table['data'] = ['data', 'date'];
+    $all_table['set_data'] = ['id', 'data'];
+
+    foreach($all_table['all'] as &$table) {
+        $select = $conn -> query('select * from '.$table.' limit 1');
+        $select -> execute();
+        $data = $select -> fetchAll();
+
+        foreach($all_table[$table] as &$in_table) {
+            if(!$data[0][$in_table]) {
+                $insert = $conn -> prepare('alter table '.$table.' add '.$in_table.' text default ""');
+                $insert -> execute();
+            }
+        }
+
+        if($data[0]['test']) {
+            $insert = $conn -> prepare('alter table '.$table.' drop test');
+            $insert -> execute();
+        }
+    }
 
     if($_GET['action'] != 'error') {
         $select = $conn -> query('select data from set_data where id = "pw"');

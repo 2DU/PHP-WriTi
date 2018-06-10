@@ -122,20 +122,31 @@
     $all_table['set_data'] = ['id', 'data'];
 
     foreach($all_table['all'] as &$table) {
-        $select = $conn -> query('select * from '.$table.' limit 1');
+        $select = $conn -> query('pragma table_info('.$table.')');
         $select -> execute();
         $data = $select -> fetchAll();
 
+        $i = 0;
+        $create = 2;
         foreach($all_table[$table] as &$in_table) {
-            if(!$data[0][$in_table]) {
+            while(count($data) > $i) {
+                if($data[$i]['name'] == $in_table) {
+                    $create = 0;
+                    
+                    break;
+                }
+
+                $i += 1;
+
+                if(count($data) == $i) {
+                    $create = 1;
+                }
+            }
+
+            if($create == 1) {
                 $insert = $conn -> prepare('alter table '.$table.' add '.$in_table.' text default ""');
                 $insert -> execute();
             }
-        }
-
-        if($data[0]['test']) {
-            $insert = $conn -> prepare('alter table '.$table.' drop test');
-            $insert -> execute();
         }
     }
 

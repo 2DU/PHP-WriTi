@@ -9,11 +9,15 @@
     $lang_file['filter'] = 'Filter';
     $lang_file['date'] = 'Date';
     $lang_file['set'] = 'Set';
+    $lang_file['version'] = 'Version';
 
     $lang_file['error'] = [
         'Typing password is wrong.',
         'Missing Error.'
     ];
+
+    $real_version = '0.0.1-Beta';
+    $inter_version = 1;
 
     function html_load($data, $head = '') {
         $main_html =    '<!DOCTYPE html>
@@ -109,48 +113,54 @@
     $conn = new PDO('sqlite:data.db');
     session_start();
 
-    $create = $conn -> prepare('create table if not exists data(test text)');
-    $create -> execute();
+    if(!isset($_SESSION['ver']) || $_SESSION['ver'] != $inter_version) {
+        $create = $conn -> prepare('create table if not exists data(test text)');
+        $create -> execute();
 
-    $create = $conn -> prepare('create table if not exists set_data(test text)');
-    $create -> execute();
+        $create = $conn -> prepare('create table if not exists set_data(test text)');
+        $create -> execute();
 
-    $all_table = [];
+        $all_table = [];
 
-    $all_table['all'] = ['data', 'set_data'];
-    $all_table['data'] = ['data', 'date'];
-    $all_table['set_data'] = ['id', 'data'];
+        $all_table['all'] = ['data', 'set_data'];
+        $all_table['data'] = ['data', 'date'];
+        $all_table['set_data'] = ['id', 'data'];
 
-    foreach($all_table['all'] as &$table) {
-        $select = $conn -> query('pragma table_info('.$table.')');
-        $select -> execute();
-        $data = $select -> fetchAll();
+        foreach($all_table['all'] as &$table) {
+            $select = $conn -> query('pragma table_info('.$table.')');
+            $select -> execute();
+            $data = $select -> fetchAll();
 
-        $i = 0;
-        $create = 2;
-        foreach($all_table[$table] as &$in_table) {
-            while(count($data) > $i) {
-                if($data[$i]['name'] == $in_table) {
-                    $create = 0;
-                    
-                    break;
+            $i = 0;
+            $create = 2;
+            foreach($all_table[$table] as &$in_table) {
+                while(count($data) > $i) {
+                    if($data[$i]['name'] == $in_table) {
+                        $create = 0;
+                        
+                        break;
+                    }
+
+                    $i += 1;
+
+                    if(count($data) == $i) {
+                        $create = 1;
+                    }
                 }
 
-                $i += 1;
-
-                if(count($data) == $i) {
-                    $create = 1;
+                if($create == 1) {
+                    $insert = $conn -> prepare('alter table '.$table.' add '.$in_table.' text default ""');
+                    $insert -> execute();
                 }
-            }
-
-            if($create == 1) {
-                $insert = $conn -> prepare('alter table '.$table.' add '.$in_table.' text default ""');
-                $insert -> execute();
             }
         }
+
+        $_SESSION['ver'] = $inter_version;
     }
 
-    if($_GET['action'] != 'error') {
+    $other_action = ['error', 'version'];
+
+    if(!in_array($_GET['action'], $other_action)) {
         $select = $conn -> query('select data from set_data where id = "pw"');
         $select -> execute();
         $user_data = $select -> fetchAll();
@@ -363,13 +373,24 @@
             }
         }
     } else {
-        switch($_GET['num']) {
-            case 1:
-                echo html_load(load_lang('error')[0]);
+        switch($_GET['action']) {
+            case 'version':
+                echo html_load(load_lang('version').' : '.$real_version);
+
+                break;
+            case 'error':
+                switch($_GET['num']) {
+                    case 1:
+                        echo html_load(load_lang('error')[0]);
+
+                        break;
+                    default:
+                        echo html_load(load_lang('error')[1]);
+                }
 
                 break;
             default:
-                echo html_load(load_lang('error')[1]);
+                echo redirect();
         }
     }
 ?>
